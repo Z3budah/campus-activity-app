@@ -1,10 +1,9 @@
 import express, { Request, Response } from 'express';
 import { body } from 'express-validator';
 import jwt from 'jsonwebtoken';
+import {validateRequests, BadRequestError} from '@zecamact/common'
 
-import { validateRequests } from '../middlewares/validate_request';
 import { User } from '../model/user';
-import { BadRequestError } from '../errors/bad-request-error';
 import { Password } from '../services/password';
 
 const router = express.Router();

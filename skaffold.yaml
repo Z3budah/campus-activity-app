@@ -15,6 +15,14 @@ build:
         manual:
           - src: 'src/***/*.ts'
             dest: .
+    - image: z3budah/activities
+      context: activities
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/***/*.ts'
+            dest: .
     - image: z3budah/client
       context: client
       docker:

@@ -7,12 +7,15 @@ export default ({ url, method, body, onSuccess }) => {
   const doRequest = async () => {
     try {
       setErrors(null);
-      const response = await axios[method](url, body).catch(err => console.log(err));
+      const response = await axios[method](url, body);
+      console.log("success:", response);
+
       if (onSuccess) {
         onSuccess(response.data);
       }
       return response.data;
     } catch (err) {
+      console.log("err in try cathc", err);
       if (err.response) {
         setErrors(
           <div className='alert alert-danger'>
