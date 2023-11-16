@@ -2,9 +2,9 @@ import Link from 'next/link'
 
 export default function Header({ currentUser }) {
   const links = [
-    !currentUser && { label: 'Sign Up', href: '/auth/signup' },
-    !currentUser && { label: 'Sign In', href: '/auth/signin' },
-    currentUser && { label: 'Sign Out', href: '/auth/signout' }
+    !currentUser && { label: '注册', href: '/auth/signup' },
+    !currentUser && { label: '登录', href: '/auth/signin' },
+    currentUser && { label: '登出', href: '/auth/signout' }
   ]
     .filter(linkConfig => linkConfig)
     .map(({ label, href }) => {
@@ -19,7 +19,7 @@ export default function Header({ currentUser }) {
   return (
     <nav className='navbar navbar-light bg-light'>
       <Link className='navbar-brand' href='/'>
-        Campus-Activity
+        校园活动管理系统
       </Link>
       <div className='d-flex justify-content-end'>
         <ul className='nav d-flex align-items-center'>

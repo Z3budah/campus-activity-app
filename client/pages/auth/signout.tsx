@@ -16,9 +16,8 @@ export default function signout() {
 
   return (
     <div>
-      {errors ? errors : <p>Signing you out...</p>}
+      {errors ? errors : <p>正在登出...</p>}
     </div>
-
   )
 
 }
