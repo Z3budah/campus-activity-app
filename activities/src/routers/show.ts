@@ -5,8 +5,7 @@ import { Activity } from "../model/activities";
 const router = express.Router();
 
 router.get('/api/activities/:id',async (req:Request, res:Response)=>{
-  const activity = await Activity.findById(req.params.id);
-
+  const activity = await Activity.findById({_id:req.params.id});
   if(!activity){
     throw new NotFoundError();
   }
