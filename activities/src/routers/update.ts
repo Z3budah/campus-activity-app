@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import { body } from 'express-validator';
+import { body, validationResult} from 'express-validator';
 import {   
   validateRequests,
   NotFoundError,
@@ -12,9 +12,24 @@ const router = express.Router();
 router.put(
   '/api/activities/:id',
   requireAuth,
-  [body('title').not().isEmpty().withMessage('Title is required')],
   validateRequests,
   async (req: Request, res: Response) => {
+    // validation 
+    if (req.body.title !== undefined) {
+      await body('title').not().isEmpty().withMessage('Title is required').run(req);
+    }
+    if (req.body.state !== undefined) {
+      await body('state').isInt({ min: 0, max: 4 }).withMessage('State must be an integer between 0 and 4').run(req);
+    }
+    const errors = validationResult(req);
+
+    // console.log(errors.array()); // Log the array of errors
+
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    /*================================================================================================================*/
     const activity = await Activity.findById(req.params.id);
 
     if (!activity) {
@@ -31,6 +46,7 @@ router.put(
       allowedFields.reduce((update:any, field) => {
         if (req.body[field] !== undefined) {
           update[field] = req.body[field];
+          console.log(req.body[field],update[field]);
         }
         return update;
       }, {})

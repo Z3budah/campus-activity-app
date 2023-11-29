@@ -8,6 +8,7 @@ import { createActivityRouter } from './routers/new';
 import { showActivityRouter } from './routers/show';
 import { indexActivityRouter } from './routers/index';
 import { updateActivityRouter } from './routers/update';
+import { deleteActivityRouter } from './routers/delete';
 
 const app = express();
 app.set('trust proxy', true);
@@ -24,6 +25,7 @@ app.use(createActivityRouter);
 app.use(showActivityRouter);
 app.use(indexActivityRouter);
 app.use(updateActivityRouter);
+app.use(deleteActivityRouter);
 
 app.all('*', async (req, res) => {
   throw new NotFoundError();

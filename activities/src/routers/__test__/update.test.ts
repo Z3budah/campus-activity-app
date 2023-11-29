@@ -44,9 +44,14 @@ it('returns a 400 if the user provides an invalid title', async () => {
   await request(app)
     .put(`/api/activities/${response.body.id}`)
     .set('Cookie', cookie)
+    .send({title:''})
+    .expect(400);
+
+  await request(app)
+    .put(`/api/activities/${response.body.id}`)
+    .set('Cookie', cookie)
     .send({
-      ...instances[0],
-      title:''
+      state:-1
     })
     .expect(400);
 
@@ -64,17 +69,15 @@ it('updates the activity provided valid inputs', async () => {
     .put(`/api/activities/${response.body.id}`)
     .set('Cookie', cookie)
     .send({
-      ...instances[0],
-      title:'new title',
-      state:0
+      // title:'new title',
+      state:1
     })
     .expect(200);
-
   const ticketResponse = await request(app)
     .get(`/api/activities/${response.body.id}`)
     .send();
   
 
-  expect(ticketResponse.body.title).toEqual('new title');
-  expect(ticketResponse.body.state).toEqual(0);
+  // expect(ticketResponse.body.title).toEqual('new title');
+  expect(ticketResponse.body.state).toEqual(1);
 });

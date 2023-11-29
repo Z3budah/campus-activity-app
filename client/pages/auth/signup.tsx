@@ -10,7 +10,7 @@ export default function signup() {
     url: '/api/users/signup',
     method: 'post',
     body: { email, password },
-    onSuccess: () => Router.push('/')
+    onSuccess: () => Router.push('/activities/manage')
   })
 
   const onSubmit = async (event) => {

@@ -1,10 +1,9 @@
 import mongoose, { Schema } from 'mongoose';
 
-enum ActivityType {
-  Moral = 'moral',
-  Intellectual = 'intellectual',
-  Culsport = 'culsport',
-}
+export type ActivityType =
+    | 'moral'
+    | 'intellectual'
+    | 'culsport';
 
 interface ActivityAttrs {
   title: string;
@@ -53,7 +52,7 @@ const activitySchema = new mongoose.Schema(
     },
     actype: {
       type: String,
-      enum: Object.values(ActivityType),
+      enum:  ['moral', 'intellectual', 'culsport'],
       required: true,
     },
     score: {
@@ -90,4 +89,4 @@ const Activity = mongoose.model<ActivityDoc, ActivityModel>(
   activitySchema
 );
 
-export { Activity, ActivityType };
+export { Activity };
