@@ -8,11 +8,12 @@ interface UseRequestProps {
   onSuccess?: (data: any) => void;
 }
 
-export default ({ url, method, body, onSuccess }: UseRequestProps) => {
+export default ({ url, method, onSuccess }: UseRequestProps) => {
   const [errors, setErrors] = useState(null);
 
-  const doRequest = async () => {
+  const doRequest = async (body: {}) => {
     try {
+      console.log(body);
       setErrors(null);
       const response = await axios[method](url, body);
       console.log("success:", response);
@@ -24,15 +25,7 @@ export default ({ url, method, body, onSuccess }: UseRequestProps) => {
     } catch (err) {
       console.log("err in try cathc", err);
       if (err.response) {
-        setErrors(
-          <div className='alert alert-danger'>
-            <h4>Ooops...</h4>
-            <ul className='my-0'>
-              {err.response.data.errors.map(err => <li key={err.message}> {err.message} </li>)}
-            </ul>
-          </div>
-
-        )
+        setErrors(err.response.data.errors);
       }
     }
   };

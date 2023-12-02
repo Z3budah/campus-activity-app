@@ -1,0 +1,75 @@
+.dnone {
+  display: none!important;
+}
+
+*, ::after, ::before{
+  box-sizing: border-box;
+}
+
+@media(min-width:1200px) {
+  .container {
+    max-width: 1140px;
+  }
+}
+
+@media(min-width:992px){
+  .container {
+    max-width: 960px;
+  }
+  .dblock {
+    display: block!important;
+  }
+
+  .bgimage {
+    flex:0 0 50%;
+    max-width: 50%;
+
+    img {
+      border-radius: 0.35rem 0 0 0.35rem;
+    }
+  }
+  .formTable {
+    flex:0 0 50%;
+    max-width: 50%;    
+  }
+}
+
+@media(max-width:992px){
+  .container {
+    max-width: 80%;
+  }
+}
+
+body {
+  background-color: #4e73df;
+  background-image: linear-gradient(90deg,#4e73df 10%,#224abe 100%);
+  background-size: cover;
+}
+
+.container {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 2rem;
+  background-color: aliceblue;
+  border-radius: 0.35rem;
+  box-shadow: 0 0.8rem 3rem;
+
+  .login {
+    padding-right: 1rem;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  
+  .formTable {
+    margin: 1rem 0;
+    line-height: 1.5rem;
+  }
+
+  .logbtn {
+    width: 100%;
+  }
+
+  
+}

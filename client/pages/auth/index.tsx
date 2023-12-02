@@ -3,7 +3,7 @@ import buildClient from "../../api/build-client";
 const LandingPage = ({ currentUser }) => {
   // console.log(currentUser);
   return (
-    currentUser ? <h1>已登录</h1> : <h1>尚未登录</h1>
+    currentUser ? <h1>Sign in</h1> : <h1>Not sign in</h1>
   )
 };
 

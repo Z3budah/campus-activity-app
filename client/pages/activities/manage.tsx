@@ -14,6 +14,7 @@ interface ActiRecord {
   state: number;
   time: string;
 }
+
 const zero = (text: string) => {
   return text.length < 2 ? '0' + text : text;
 };

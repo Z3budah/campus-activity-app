@@ -1,10 +1,11 @@
 import Link from 'next/link'
+import header from './header.module.less'
 
 export default function Header({ currentUser }) {
   const links = [
-    !currentUser && { label: '注册', href: '/auth/signup' },
-    !currentUser && { label: '登录', href: '/auth/signin' },
-    currentUser && { label: '登出', href: '/auth/signout' }
+    !currentUser && { label: 'Register', href: '/auth/signup' },
+    !currentUser && { label: 'Login', href: '/auth/signin' },
+    currentUser && { label: 'Sign Out', href: '/auth/signout' }
   ]
     .filter(linkConfig => linkConfig)
     .map(({ label, href }) => {
@@ -17,15 +18,18 @@ export default function Header({ currentUser }) {
     })
 
   return (
-    <nav className='navbar navbar-light bg-light'>
-      <Link className='navbar-brand' href='/auth'>
-        校园活动管理系统
-      </Link>
-      <div className='d-flex justify-content-end'>
-        <ul className='nav d-flex align-items-center'>
-          {links}
-        </ul>
+    <nav className='navbar navbar-light bg-light text-white'>
+      <div className={header.container}>
+        <Link className='navbar-brand' href='/auth'>
+          Campus Activity
+        </Link>
+        <div className='d-flex justify-content-end'>
+          <ul className='nav d-flex align-items-center'>
+            {links}
+          </ul>
+        </div>
       </div>
     </nav>
+
   )
 }

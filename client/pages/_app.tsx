@@ -2,11 +2,14 @@ import 'bootstrap/dist/css/bootstrap.css'
 import "../static/globals.less";
 import buildClient from '../api/build-client';
 import Header from '../components/header';
-
+import { useRouter } from 'next/router';
 
 const AppComponent = ({ Component, pageProps, currentUser }) => {
+  const router = useRouter();
+  const authHeader = router.pathname.startsWith('/auth');
+
   return <div>
-    <Header currentUser={currentUser} />
+    {authHeader && <Header currentUser={currentUser} />}
     < Component {...pageProps} />
   </div>
 };
