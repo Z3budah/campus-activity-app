@@ -18,7 +18,7 @@ export default function Header({ currentUser }) {
 
   return (
     <nav className='navbar navbar-light bg-light'>
-      <Link className='navbar-brand' href='/'>
+      <Link className='navbar-brand' href='/auth'>
         校园活动管理系统
       </Link>
       <div className='d-flex justify-content-end'>
