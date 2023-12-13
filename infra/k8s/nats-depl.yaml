@@ -28,7 +28,7 @@ spec:
             '2',
             '-SD',
             '-cid',
-            'campus-activity-app',
+            'activity',
           ]
 
 ---

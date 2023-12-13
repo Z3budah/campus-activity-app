@@ -2,6 +2,7 @@ import request from 'supertest';
 import { app } from '../../app';
 import instances from './instances';
 import { Activity } from '../../model/activities';
+import { natsWrapper } from '../../nats-wrapper';
 
 it('has a route handler listening to /api/activities for post requests', async () => {
   const response = await request(app).post('/api/activities').send({});
@@ -28,7 +29,7 @@ it('returns an error if an invalid title is provided', async () => {
     .set('Cookie', global.signin())
     .send({
       title: '',
-      capacity:10,
+      capacity: 10,
     })
     .expect(400);
 
@@ -36,7 +37,7 @@ it('returns an error if an invalid title is provided', async () => {
     .post('/api/activities')
     .set('Cookie', global.signin())
     .send({
-      capacity:10,
+      capacity: 10,
     })
     .expect(400);
 });
@@ -48,7 +49,7 @@ it('creates a activity with valid inputs', async () => {
 
   const activityIns = instances[0];
 
-  
+
   await request(app)
     .post('/api/activities')
     .set('Cookie', global.signin())
@@ -59,3 +60,15 @@ it('creates a activity with valid inputs', async () => {
   expect(activity.length).toEqual(1);
   expect(activity[0].title).toEqual(activityIns.title);
 });
+
+it('publishes an event', async () => {
+  const activityIns = instances[0];
+
+  await request(app)
+    .post('/api/activities')
+    .set('Cookie', global.signin())
+    .send(activityIns)
+    .expect(201);
+
+  console.log(natsWrapper);
+})

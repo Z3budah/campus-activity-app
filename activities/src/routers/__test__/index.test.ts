@@ -8,7 +8,7 @@ function createCounter() {
   let count = 0;
 
   function increment() {
-    count = (count + 1)%6;
+    count = (count + 1) % 6;
     return count;
   }
 
@@ -17,13 +17,13 @@ function createCounter() {
 
 const counter = createCounter();
 
-const createTicket = async (x:number,user?:any) => {
-  if(!user){
+const createTicket = async (x: number, user?: any) => {
+  if (!user) {
     user = global.signin();
   }
-  for(let i=0;i<x;i++){
+  for (let i = 0; i < x; i++) {
     const activityIns = instances[counter()];
-    await request(app).post('/api/activities').set('Cookie',user).send(activityIns);
+    await request(app).post('/api/activities').set('Cookie', user).send(activityIns);
   }
 };
 
@@ -51,12 +51,12 @@ it('can fetch a list of activities with state=1', async () => {
 it('can fetch a list of activities created by the same user', async () => {
   //first user
   let user = global.signin();
-  await createTicket(3,user);
+  await createTicket(3, user);
   let response = await request(app).get('/api/activities?pub=true').set('Cookie', user).send().expect(200);
   expect(response.body.length).toEqual(3);
   //second user
   user = global.signin();
-  await createTicket(1,user);
+  await createTicket(1, user);
   response = await request(app).get('/api/activities?pub=true').set('Cookie', user).send().expect(200);
   expect(response.body.length).toEqual(1);
 });

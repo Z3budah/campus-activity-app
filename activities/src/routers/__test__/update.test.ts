@@ -3,6 +3,7 @@ import { app } from '../../app';
 import mongoose from 'mongoose';
 import instances from './instances';
 import { Activity } from '../../model/activities';
+import { natsWrapper } from '../../nats-wrapper';
 
 it('returns a 404 if the provided id does not exist', async () => {
   const id = new mongoose.Types.ObjectId().toHexString();
@@ -44,14 +45,14 @@ it('returns a 400 if the user provides an invalid title', async () => {
   await request(app)
     .put(`/api/activities/${response.body.id}`)
     .set('Cookie', cookie)
-    .send({title:''})
+    .send({ title: '' })
     .expect(400);
 
   await request(app)
     .put(`/api/activities/${response.body.id}`)
     .set('Cookie', cookie)
     .send({
-      state:-1
+      state: -1
     })
     .expect(400);
 
@@ -70,14 +71,33 @@ it('updates the activity provided valid inputs', async () => {
     .set('Cookie', cookie)
     .send({
       // title:'new title',
-      state:1
+      state: 1
     })
     .expect(200);
   const ticketResponse = await request(app)
     .get(`/api/activities/${response.body.id}`)
     .send();
-  
+
 
   // expect(ticketResponse.body.title).toEqual('new title');
   expect(ticketResponse.body.state).toEqual(1);
 });
+
+it('publishes an event', async () => {
+  const cookie = global.signin();
+
+  const response = await request(app)
+    .post('/api/activities')
+    .set('Cookie', cookie)
+    .send(instances[0]);
+
+  await request(app)
+    .put(`/api/activities/${response.body.id}`)
+    .set('Cookie', cookie)
+    .send({
+      state: 1
+    })
+    .expect(200);
+
+  expect(natsWrapper.client.publish).toHaveBeenCalled();
+})

@@ -1,11 +1,14 @@
 import express, { Request, Response } from 'express';
-import { body, validationResult} from 'express-validator';
-import {   
+import { body, validationResult } from 'express-validator';
+import {
   validateRequests,
   NotFoundError,
   requireAuth,
-  NotAuthorizedError,} from '@zecamact/common';
+  NotAuthorizedError,
+} from '@zecamact/common';
 import { Activity } from '../model/activities';
+import { ActivityUpdatedPublisher } from '../events/publishers/activity-updated-publisher';
+import { natsWrapper } from '../nats-wrapper';
 
 const router = express.Router();
 
@@ -40,19 +43,30 @@ router.put(
       throw new NotAuthorizedError();
     }
 
-    const allowedFields = ['title', 'description', 'time', 'location', 'actype', 'score', 'capacity','state'];
+    const allowedFields = ['title', 'description', 'time', 'location', 'actype', 'score', 'capacity', 'state'];
 
     activity.set(
-      allowedFields.reduce((update:any, field) => {
+      allowedFields.reduce((update: any, field) => {
         if (req.body[field] !== undefined) {
           update[field] = req.body[field];
-          console.log(req.body[field],update[field]);
+          // console.log(req.body[field], update[field]);
         }
         return update;
       }, {})
     );
 
     await activity.save();
+    new ActivityUpdatedPublisher(natsWrapper.client).publish({
+      title: activity.title,
+      description: activity.description,
+      time: activity.time,
+      location: activity.location,
+      actype: activity.actype,
+      score: activity.score,
+      capacity: activity.capacity,
+      pubId: activity.pubId,
+      state: activity.state
+    })
 
     res.send(activity);
   }
