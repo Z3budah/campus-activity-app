@@ -18,7 +18,12 @@ export default function signin() {
   const { doRequest, errors } = useRequest({
     url: '/api/users/signin',
     method: 'post',
-    onSuccess: () => Router.push('/activities/manage')
+    onSuccess: (data) => {
+      console.log(data);
+      if (data.role == "publisher") Router.push('/activities/manage');
+      // else if (data.role == "user") Router.push('/activities');
+      else Router.push('/');
+    }
   })
 
 

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import useRequest from '../../hooks/use-request';
-import { Button, Checkbox, Form, Input } from 'antd';
+import { Button, Radio, Form, Input } from 'antd';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 
 import Router from 'next/router';
@@ -18,7 +18,12 @@ export default function signup() {
   const { doRequest, errors } = useRequest({
     url: '/api/users/signup',
     method: 'post',
-    onSuccess: () => Router.push('/activities/manage')
+    onSuccess: (data) => {
+      console.log(data);
+      if (data.role == "publisher") Router.push('/activities/manage');
+      // else if (data.role == "user") Router.push('/activities');
+      else Router.push('/');
+    }
   })
 
 
@@ -54,6 +59,12 @@ export default function signup() {
             rules={[{ required: true, message: 'Please enter password!' }]}
           >
             <Input.Password prefix={<LockOutlined className="site-form-item-icon" />} placeholder='Password' />
+          </Form.Item>
+          <Form.Item name="role" label="Role">
+            <Radio.Group>
+              <Radio value="publisher">Publisher</Radio>
+              <Radio value="user">User</Radio>
+            </Radio.Group>
           </Form.Item>
           <Form.Item>
             <Button className={auth.logbtn} type="primary" htmlType="submit">
