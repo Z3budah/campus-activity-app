@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: regs-mongo-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: regs-mongo
+  template:
+    metadata:
+      labels:
+        app: regs-mongo
+    spec:
+      containers:
+        - name: regs-mongo
+          image: mongo
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: regs-mongo-srv
+spec:
+  selector:
+    app: regs-mongo
+  ports:
+    - name: db
+      protocol: TCP
+      port: 27017
+      targetPort: 27017
