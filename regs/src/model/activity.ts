@@ -2,6 +2,7 @@ import mongoose, { Schema } from "mongoose";
 import { Registration } from "./registration";
 
 interface ActivityAttrs {
+  id: string,
   title: string;
   time: { start: Date; end: Date };
   capacity: number | string;
@@ -56,7 +57,13 @@ const activitySchema = new mongoose.Schema({
 });
 
 activitySchema.statics.build = (attrs: ActivityAttrs) => {
-  return new Activity(attrs);
+  return new Activity({
+    _id: attrs.id,
+    title: attrs.title,
+    time: attrs.time,
+    capacity: attrs.capacity,
+    state: attrs.state,
+  });
 }
 
 activitySchema.methods.isAvailable = async function () {

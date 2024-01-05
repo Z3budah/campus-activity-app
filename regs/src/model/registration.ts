@@ -11,7 +11,7 @@ interface RegAttrs {
 
 interface RegDoc extends mongoose.Document {
   userId: string,
-  status: string,
+  status: RegStatus,
   expiresAt: Date,
   activity: ActivityDoc,
 }

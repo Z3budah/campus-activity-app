@@ -4,6 +4,8 @@ import { NotFoundError, requireAuth, validateRequests, RegStatus, BadRequestErro
 import { body } from 'express-validator';
 import { Activity } from '../model/activity';
 import { Registration } from '../model/registration';
+import { RegCreatedPublisher } from '../events/publishers/reg-created-publisher';
+import { natsWrapper } from '../nats-wrapper';
 
 const router = express.Router();
 const EXPIRATION_WINDOWS_SECONDS = 15 * 60;
@@ -34,7 +36,7 @@ router.post('/api/regs', requireAuth,
     const expiration = new Date();
     expiration.setSeconds(expiration.getSeconds() + 15 * 60);
 
-    // Build the order and save it to the database
+    // Build the registration and save it to the database
     const registration = Registration.build({
       userId: req.currentUser!.id,
       status: RegStatus.Created,
@@ -50,8 +52,17 @@ router.post('/api/regs', requireAuth,
         throw new DatabaseConnectionError();
       })
 
-    // Publish an event saying that an order was created
+    // Publish an event saying that a registration was created
+    new RegCreatedPublisher(natsWrapper.client).publish({
+      id: registration.id,
+      status: registration.status,
+      userId: registration.userId,
+      expiresAt: registration.expiresAt.toISOString(),
+      activity: registration.activity
+    })
     res.status(201).send(registration);
   });
+
+
 
 export { router as newRegRouter };

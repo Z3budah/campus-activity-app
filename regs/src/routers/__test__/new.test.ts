@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import { app } from '../../app'
 import { Activity } from '../../model/activity';
 import { Registration } from '../../model/registration';
+import { natsWrapper } from '../../nats-wrapper';
 
 
 it('return an error if the activity does not exist', async () => {
@@ -20,6 +21,7 @@ it('return an error if the activity does not exist', async () => {
 it('return an error if the activity is not avalible', async () => {
   //wrong state
   const activity = Activity.build({
+    id: new mongoose.Types.ObjectId().toHexString(),
     title: 'new activity',
     time: { start: new Date('2018-10-29T09:00:00'), end: new Date('2018-10-29T18:00:00') },
     capacity: "No Limited",
@@ -55,3 +57,23 @@ it('return an error if the activity is not avalible', async () => {
     .expect(400);
 
 });
+
+it('emits a reg created event', async () => {
+  const activity = Activity.build({
+    id: new mongoose.Types.ObjectId().toHexString(),
+    title: 'new activity',
+    time: { start: new Date('2018-10-29T09:00:00'), end: new Date('2018-10-29T18:00:00') },
+    capacity: "No Limited",
+    state: 2,
+  })
+
+  await activity.save();
+
+  await request(app)
+    .post('/api/regs')
+    .set('Cookie', global.signin())
+    .send({ activityId: activity.id })
+    .expect(201);
+
+  expect(natsWrapper.client.publish).toHaveBeenCalled();
+})

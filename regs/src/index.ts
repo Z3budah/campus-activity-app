@@ -1,6 +1,8 @@
 import mongoose, { ConnectOptions } from 'mongoose';
 import { app } from './app';
 import { natsWrapper } from './nats-wrapper';
+import { ActivityCreatedListener } from './events/listeners/activity-created-listener';
+import { ActivityUpdatedListener } from './events/listeners/activity-updated-listener';
 
 const start = async () => {
   if (!process.env.JWT_KEY) {
@@ -36,6 +38,8 @@ const start = async () => {
       process.on('SIGINT', () => { natsWrapper.client.close() });
       process.on('SIGTERM', () => { natsWrapper.client.close() });
 
+      new ActivityCreatedListener(natsWrapper.client).listen();
+      new ActivityUpdatedListener(natsWrapper.client).listen();
 
       await mongoose.connect(process.env.MONGO_URI);
       console.log('Connected to MongoDB');
