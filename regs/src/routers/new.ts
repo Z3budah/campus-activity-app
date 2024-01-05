@@ -59,7 +59,13 @@ router.post('/api/regs', requireAuth,
       status: registration.status,
       userId: registration.userId,
       expiresAt: registration.expiresAt.toISOString(),
-      activity: registration.activity
+      activity: {
+        id: registration.activity.id,
+        title: registration.activity.title,
+        time: registration.activity.time,
+        capacity: registration.activity.state,
+        state: registration.activity.state,
+      },
     })
     res.status(201).send(registration);
   });

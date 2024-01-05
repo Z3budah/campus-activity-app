@@ -1,6 +1,8 @@
 import mongoose, { ConnectOptions } from 'mongoose';
 import { app } from './app';
 import { natsWrapper } from './nats-wrapper';
+import { RegCreatedListener } from './events/listeners/reg-created-listener';
+import { RegCancelledListener } from './events/listeners/reg-cancelled-listener';
 
 const start = async () => {
   if (!process.env.JWT_KEY) {
@@ -36,6 +38,8 @@ const start = async () => {
       process.on('SIGINT', () => { natsWrapper.client.close() });
       process.on('SIGTERM', () => { natsWrapper.client.close() });
 
+      new RegCreatedListener(natsWrapper.client).listen();
+      new RegCancelledListener(natsWrapper.client).listen();
 
       await mongoose.connect(process.env.MONGO_URI);
       console.log('Connected to MongoDB');
@@ -50,9 +54,8 @@ const start = async () => {
       await new Promise((resolve) => setTimeout(resolve, 5000));
     }
   }
-
-
 };
+
 
 app.listen(3000, () => {
   console.log('Listening on port 3000!!');

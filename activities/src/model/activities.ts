@@ -24,6 +24,7 @@ interface ActivityDoc extends mongoose.Document {
   pubId: string;
   state: number;
   version: number;
+  regsId?: string[];
 }
 
 interface ActivityModel extends mongoose.Model<ActivityDoc> {
@@ -66,6 +67,9 @@ const activitySchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    regsId: {
+      type: [String],
+    }
   },
   {
     toJSON: {
