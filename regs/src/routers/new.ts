@@ -55,6 +55,7 @@ router.post('/api/regs', requireAuth,
     // Publish an event saying that a registration was created
     new RegCreatedPublisher(natsWrapper.client).publish({
       id: registration.id,
+      version: registration.version,
       status: registration.status,
       userId: registration.userId,
       expiresAt: registration.expiresAt.toISOString(),

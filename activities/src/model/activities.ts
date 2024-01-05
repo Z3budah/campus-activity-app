@@ -1,16 +1,12 @@
 import mongoose, { Schema } from 'mongoose';
-
-export type ActivityType =
-    | 'moral'
-    | 'intellectual'
-    | 'culsport';
+import { updateIfCurrentPlugin } from 'mongoose-update-if-current';
 
 interface ActivityAttrs {
   title: string;
   description: string;
   time: { start: Date; end: Date };
   location: { text: string; map?: { latitude: number; longtitude: number } };
-  actype: ActivityType;
+  actype: string;
   score: number | string;
   capacity: number | string;
   pubId: string;
@@ -22,11 +18,12 @@ interface ActivityDoc extends mongoose.Document {
   description: string;
   time: { start: Date; end: Date };
   location: { text: string; map?: { latitude: number; longtitude: number } };
-  actype: ActivityType;
+  actype: string;
   score: number | string;
   capacity: number | string;
   pubId: string;
   state: number;
+  version: number;
 }
 
 interface ActivityModel extends mongoose.Model<ActivityDoc> {
@@ -52,7 +49,7 @@ const activitySchema = new mongoose.Schema(
     },
     actype: {
       type: String,
-      enum:  ['moral', 'intellectual', 'culsport'],
+      enum: ['moral', 'intellectual', 'culsport'],
       required: true,
     },
     score: {
@@ -79,6 +76,9 @@ const activitySchema = new mongoose.Schema(
     },
   }
 );
+
+activitySchema.set('versionKey', 'version');
+activitySchema.plugin(updateIfCurrentPlugin);
 
 activitySchema.statics.build = (attrs: ActivityAttrs) => {
   return new Activity(attrs);

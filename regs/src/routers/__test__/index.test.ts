@@ -6,6 +6,7 @@ import { Registration } from '../../model/registration';
 
 const buildActivity = async () => {
   const activity = Activity.build({
+    id: new mongoose.Types.ObjectId().toHexString(),
     title: 'new activity',
     time: { start: new Date('2018-10-29T09:00:00'), end: new Date('2018-10-29T18:00:00') },
     capacity: "No Limited",

@@ -7,13 +7,12 @@ export class ActivityUpdatedListener extends Listener<ActivityUpdatedEvent>{
   subject: Subjects.ActivityUpdated = Subjects.ActivityUpdated;
   queueGroupName = queueGroupName;
   async onMessage(data: ActivityUpdatedEvent['data'], msg: Message) {
-    const { title, time, capacity, state } = data;
+    const activity = await Activity.findByEvent(data);
 
-    const activity = await Activity.findById(data.id);
     if (!activity) {
       throw new Error('Activity not found');
     }
-
+    const { title, time, capacity, state } = data;
     activity.set({ title, time, capacity, state });
 
     await activity.save();

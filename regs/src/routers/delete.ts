@@ -21,6 +21,7 @@ router.delete('/api/regs/:regId', requireAuth, async (req: Request, res: Respons
 
   new RegCancelledPublisher(natsWrapper.client).publish({
     id: reg.id,
+    version: reg.version,
     userId: reg.userId,
     activity: {
       id: reg.activity.id,

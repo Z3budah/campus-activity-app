@@ -1,4 +1,5 @@
 import mongoose from "mongoose"
+import { updateIfCurrentPlugin } from "mongoose-update-if-current";
 import { RegStatus } from '@zecamact/common'
 import { ActivityDoc } from './activity'
 
@@ -14,6 +15,7 @@ interface RegDoc extends mongoose.Document {
   status: RegStatus,
   expiresAt: Date,
   activity: ActivityDoc,
+  version: number;
 }
 
 interface RegModel extends mongoose.Model<RegDoc> {
@@ -46,6 +48,9 @@ const regSchema = new mongoose.Schema({
     }
   }
 });
+
+regSchema.set('versionKey', 'version');
+regSchema.plugin(updateIfCurrentPlugin);
 
 regSchema.statics.build = (attrs: RegAttrs) => {
   return new Registration(attrs);

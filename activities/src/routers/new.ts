@@ -40,7 +40,8 @@ router.post('/api/activities', requireAuth, [
       score: activity.score,
       capacity: activity.capacity,
       pubId: activity.pubId,
-      state: activity.state
+      state: activity.state,
+      version: activity.version
     })
 
     res.status(201).send(activity);

@@ -1,4 +1,5 @@
 import mongoose, { Schema } from "mongoose";
+import { updateIfCurrentPlugin } from "mongoose-update-if-current";
 import { Registration } from "./registration";
 
 interface ActivityAttrs {
@@ -24,11 +25,13 @@ export interface ActivityDoc extends mongoose.Document {
   time: { start: Date; end: Date };
   capacity: number | string;
   state: number;
+  version: number;
   isAvailable: () => Promise<boolean>;
 }
 
 interface ActivityModel extends mongoose.Model<ActivityDoc> {
   build(attrs: ActivityAttrs): ActivityDoc;
+  findByEvent(event: { id: string, version: number }): Promise<ActivityDoc | null>;
 }
 
 const activitySchema = new mongoose.Schema({
@@ -56,6 +59,15 @@ const activitySchema = new mongoose.Schema({
   },
 });
 
+activitySchema.set('versionKey', 'version');
+activitySchema.plugin(updateIfCurrentPlugin);
+
+activitySchema.statics.findByEvent = (event: { id: string, version: number }) => {
+  return Activity.findOne({
+    _id: event.id,
+    version: event.version - 1,
+  });
+};
 activitySchema.statics.build = (attrs: ActivityAttrs) => {
   return new Activity({
     _id: attrs.id,

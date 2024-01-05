@@ -1,8 +1,10 @@
 import request from 'supertest';
+import mongoose from "mongoose";
 import { app } from '../../app'
 import { Activity } from '../../model/activity';
 it('fetches the registration', async () => {
   const activity = Activity.build({
+    id: new mongoose.Types.ObjectId().toHexString(),
     title: 'new activity',
     time: { start: new Date('2018-10-29T09:00:00'), end: new Date('2018-10-29T18:00:00') },
     capacity: "No Limited",
@@ -29,6 +31,7 @@ it('fetches the registration', async () => {
 
 it('return an error if one user tries to fetch another users registration', async () => {
   const activity = Activity.build({
+    id: new mongoose.Types.ObjectId().toHexString(),
     title: 'new activity',
     time: { start: new Date('2018-10-29T09:00:00'), end: new Date('2018-10-29T18:00:00') },
     capacity: "No Limited",
