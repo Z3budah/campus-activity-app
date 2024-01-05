@@ -31,6 +31,7 @@ router.post('/api/activities', requireAuth, [
 
     await activity.save();
     new ActivityCreatedPublisher(natsWrapper.client).publish({
+      id: activity.id,
       title: activity.title,
       description: activity.description,
       time: activity.time,

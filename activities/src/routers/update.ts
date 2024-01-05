@@ -57,6 +57,7 @@ router.put(
 
     await activity.save();
     new ActivityUpdatedPublisher(natsWrapper.client).publish({
+      id: activity.id,
       title: activity.title,
       description: activity.description,
       time: activity.time,
