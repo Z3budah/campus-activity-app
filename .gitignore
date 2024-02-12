@@ -122,5 +122,5 @@ dist
 
 #test
 nats-test/
-
+client/
 

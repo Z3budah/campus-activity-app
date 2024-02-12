@@ -23,6 +23,7 @@ router.post('/api/regs', requireAuth,
     const { activityId } = req.body;
     // Find the activity the user is trying to register in the database
     const activity = await Activity.findById(activityId);
+
     if (!activity) {
       throw new NotFoundError();
     }

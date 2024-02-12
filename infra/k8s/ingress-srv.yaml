@@ -24,6 +24,20 @@ spec:
                 name: activities-srv
                 port:
                   number: 3000   
+          - path: /api/regs/?(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: regs-srv
+                port:
+                  number: 3000   
+          - path: /api/execute/?(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: execute-srv
+                port:
+                  number: 3000   
           - path: /?(.*)
             pathType: Prefix
             backend:
