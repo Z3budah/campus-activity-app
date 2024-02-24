@@ -29,6 +29,7 @@ const userSchema = new mongoose.Schema({
   },
   role: {
     type: String,
+    enum: ['publisher', 'admin', 'student'],
     required: true
   }
 }, {
@@ -47,7 +48,6 @@ userSchema.pre('save', async function (done) {
     const hashed = await Password.toHash(this.get('password'));
     this.set('password', hashed);
   }
-
   done();
 });
 

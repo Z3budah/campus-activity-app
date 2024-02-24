@@ -31,22 +31,22 @@ build:
         manual:
           - src: 'src/***/*.ts'
             dest: .
-    - image: z3budah/expiration
-      context: expiration
-      docker:
-        dockerfile: Dockerfile
-      sync:
-        manual:
-          - src: 'src/***/*.ts'
-            dest: .
-    - image: z3budah/execute
-      context: execute
-      docker:
-        dockerfile: Dockerfile
-      sync:
-        manual:
-          - src: 'src/***/*.ts'
-            dest: .
+    # - image: z3budah/expiration
+    #   context: expiration
+    #   docker:
+    #     dockerfile: Dockerfile
+    #   sync:
+    #     manual:
+    #       - src: 'src/***/*.ts'
+    #         dest: .
+    # - image: z3budah/execute
+    #   context: execute
+    #   docker:
+    #     dockerfile: Dockerfile
+    #   sync:
+    #     manual:
+    #       - src: 'src/***/*.ts'
+    #         dest: .
     - image: z3budah/client
       context: client
       docker:

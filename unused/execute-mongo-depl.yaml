@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: execute-mongo-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: execute-mongo
+  template:
+    metadata:
+      labels:
+        app: execute-mongo
+    spec:
+      containers:
+        - name: execute-mongo
+          image: mongo
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: execute-mongo-srv
+spec:
+  selector:
+    app: execute-mongo
+  ports:
+    - name: db
+      protocol: TCP
+      port: 27017
+      targetPort: 27017

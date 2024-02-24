@@ -39,7 +39,7 @@ router.put(
       throw new NotFoundError();
     }
 
-    if (activity.pubId !== req.currentUser!.id) {
+    if (activity.pubId !== req.currentUser!.id && req.currentUser!.role !== 'admin') {
       throw new NotAuthorizedError();
     }
 

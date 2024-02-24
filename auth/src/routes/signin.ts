@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
 import { body } from 'express-validator';
 import jwt from 'jsonwebtoken';
-import {validateRequests, BadRequestError} from '@zecamact/common'
+import { validateRequests, BadRequestError } from '@zecamact/common'
 
 import { User } from '../model/user';
 import { Password } from '../services/password';
@@ -40,6 +40,7 @@ router.post(
       {
         id: existingUser.id,
         email: existingUser.email,
+        role: existingUser.role
       },
       process.env.JWT_KEY!
     );
