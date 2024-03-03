@@ -2,12 +2,14 @@ import express from 'express';
 import { json } from 'body-parser';
 import 'express-async-errors';
 import cookieSession from 'cookie-session';
-import {errorHandler, NotFoundError} from '@zecamact/common';
+import { errorHandler, NotFoundError } from '@zecamact/common';
 
 import { currentUserRouter } from './routes/current-user';
+import { allUserRouter } from './routes/allusers';
 import { signinRouter } from './routes/signin';
 import { signoutRouter } from './routes/signout';
 import { signupRouter } from './routes/signup';
+import { changePasswordRouter } from './routes/change-password';
 
 const app = express();
 app.set('trust proxy', true);
@@ -20,9 +22,11 @@ app.use(
 );
 
 app.use(currentUserRouter);
+app.use(allUserRouter);
 app.use(signinRouter);
 app.use(signoutRouter);
 app.use(signupRouter);
+app.use(changePasswordRouter);
 
 app.all('*', async (req, res) => {
   throw new NotFoundError();
@@ -30,4 +34,4 @@ app.all('*', async (req, res) => {
 
 app.use(errorHandler);
 
-export {app};
+export { app };

@@ -158,6 +158,29 @@
     return result;
   };
 
+
+  const zero = (text) => {
+    return text.length < 2 ? '0' + text : text;
+  };
+  /*时间处理*/
+  const formatTime = function formatTime(time, template) {
+    const moment = require('moment');
+    if (typeof time !== "string") {
+      time = moment(new Date()).format('YYYY-MM-DDTHH:mm:ss');
+    }
+    if (typeof template !== "string") {
+      template = "{0}年{1}月{2}日 {3}:{4}:{5}";
+    }
+
+    let arr = time.match(/\d+/g);
+
+    return template.replace(/\{(\d+)\}/g, (_, $1) => {
+      let item = arr[$1] || '00';
+      if (item.length < 2) item = '0' + item;
+      return item;
+    });
+  };
+
   const utils = {
     toType,
     isFunction,
@@ -167,7 +190,8 @@
     debounce,
     throttle,
     each,
-    clone
+    clone,
+    formatTime
   };
 
   /*处理冲突*/

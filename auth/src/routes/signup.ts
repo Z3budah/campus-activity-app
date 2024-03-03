@@ -4,11 +4,12 @@ import jwt from 'jsonwebtoken';
 import { validateRequests, BadRequestError } from '@zecamact/common'
 
 import { User } from '../model/user';
+import { Student } from '../model/student';
 
 
 const router = express.Router();
 
-const allowedRoles = ['publisher', 'user'];
+const allowedRoles = ['publisher', 'admin', 'student'];
 
 router.post('/api/users/signup',
   [
@@ -30,6 +31,16 @@ router.post('/api/users/signup',
 
     const user = User.build({ email, password, role });
     await user.save();
+
+    if (role === 'student') {
+      const { name, phone } = req.body;
+      const student = new Student({
+        userId: user.id,
+        name: name,
+        phone: phone
+      });
+      await student.save();
+    };
 
     // generate JWT
     const userJwt = jwt.sign(
