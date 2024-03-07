@@ -1,7 +1,9 @@
 name: tests-regs
 
 on:
-  pull_request
+  pull_request:
+    paths:
+      - 'regs/**'
 
 jobs:
   build:
