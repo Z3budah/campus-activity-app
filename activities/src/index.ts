@@ -5,6 +5,7 @@ import { RegCreatedListener } from './events/listeners/reg-created-listener';
 import { RegCancelledListener } from './events/listeners/reg-cancelled-listener';
 
 const start = async () => {
+  console.log('Starting up...');
   if (!process.env.JWT_KEY) {
     throw new Error('JWT_KEY must be defined');
   }
