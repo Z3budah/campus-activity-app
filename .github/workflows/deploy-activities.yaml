@@ -1,0 +1,25 @@
+name: deploy-activities
+
+on:
+  push:
+    branches: 
+      - main
+    paths:
+      -  'activities/**'
+      
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - run: cd activities && docker build -t z3budah/activities .
+    - run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+      env:
+        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+    - run: docker push z3budah/activities
+    - uses: digitalocean/action-doctl@v2
+      with:
+        token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+    - run: doctl kubectl cluster kubeconfig save campusactivity
+    - run: kubectl rollout restart deployment activities-depl
