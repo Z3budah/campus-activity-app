@@ -52,11 +52,12 @@ it('can fetch a list of activities created by the same user', async () => {
   //first user
   let user = global.signin();
   await createTicket(3, user);
-  let response = await request(app).get('/api/activities?pub=true').set('Cookie', user).send().expect(200);
+  let response = await request(app).get('/api/activities').set('Cookie', user).send().expect(200);
   expect(response.body.length).toEqual(3);
   //second user
   user = global.signin();
   await createTicket(1, user);
-  response = await request(app).get('/api/activities?pub=true').set('Cookie', user).send().expect(200);
+  response = await request(app).get('/api/activities').set('Cookie', user).send().expect(200);
   expect(response.body.length).toEqual(1);
+
 });
