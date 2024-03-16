@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
 /* antd */
 import './manage.less'
 import { Button, Tag, Table, Popconfirm, message } from 'antd';
@@ -10,22 +10,12 @@ import { deleteActivity, updateState, getActivity, updateActivity } from '../../
 import { connect } from 'react-redux';
 import action from '../../store/actions';
 
+/* router */
 import { useRouter } from 'next/router';
 import Link from 'next/link'
 
 /* Date Process */
 import { formateTime } from '../../public/timeutils';
-
-// const zero = (text) => {
-//   return text.length < 2 ? '0' + text : text;
-// };
-
-// const formateTime = function formateTime(time) {
-//   let arr = time.match(/\d+/g),
-//     [, month, day, hours = '00', minutes = '00'] = arr;
-
-//   return `${zero(month)}-${zero(day)} ${zero(hours)}:${zero(minutes)}`;
-// };
 
 
 const Manage = function manage(props) {

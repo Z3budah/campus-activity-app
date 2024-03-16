@@ -69,6 +69,12 @@ export default function SideNav({ children, isAdmin }) {
       case 'a2':
         router.push('/activities/create');
         break;
+      case 'b1':
+        router.push('/activities/users');
+        break;
+      case 'b2':
+        router.push('/activities/addUser');
+        break;
       default:
         break;
     }

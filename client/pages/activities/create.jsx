@@ -4,8 +4,9 @@ import Create from '../../components/activity/Create'
 
 
 export default function create(props) {
+  const { currentUser } = props;
   return (
-    <SideNav>
+    <SideNav isAdmin={currentUser.role == 'admin'}>
       <Create {...props} />
     </SideNav>
   )

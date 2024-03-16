@@ -2,7 +2,7 @@ import express, { Request, Response } from 'express';
 import { body } from 'express-validator';
 import jwt from 'jsonwebtoken';
 
-import { currentUser, requireAuth, BadRequestError, validateRequests } from '@zecamact/common';
+import { currentUser, requireAuth, BadRequestError, validateRequests, NotAuthorizedError } from '@zecamact/common';
 
 import { User } from '../model/user';
 import { Password } from '../services/password';
@@ -24,8 +24,15 @@ router.post(
   async (req: Request, res: Response) => {
     console.log('change pwd router');
     const { oldPassword, newPassword } = req.body;
-    console.log(oldPassword, newPassword);
-    const existingUser = await User.findById(req.currentUser!.id);
+    let id = req.body.id;
+    if (id && req.currentUser?.role !== "admin") {
+      throw new NotAuthorizedError();
+    }
+    if (!id) {
+      id = req.currentUser!.id;
+    }
+    console.log(id);
+    const existingUser = await User.findById(id);
 
     if (!existingUser) {
       throw new BadRequestError('User not exist');
