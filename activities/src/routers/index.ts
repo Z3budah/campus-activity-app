@@ -13,12 +13,17 @@ interface QueryParams {
 router.get('/api/activities', async (req: Request, res: Response) => {
   const { limit, page, state, pub } = req.query;
 
-  const queryObject:QueryParams = {};
-  if(state){
-    queryObject.state = parseInt(state as string,10);
+  const queryObject: QueryParams = {};
+  if (state) {
+    queryObject.state = parseInt(state as string, 10);
   }
-  if(pub){
+
+  if (req.currentUser && req.currentUser.role === 'publisher') {
     queryObject.pubId = req.currentUser!.id;
+  }
+
+  if (pub) {
+    queryObject.pubId = pub.toString();
   }
   const activities = await Activity.find(queryObject);
 
