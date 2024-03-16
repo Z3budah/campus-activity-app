@@ -18,11 +18,18 @@ const userAction = {
       list
     };
   },
-  //sync dispatch: delete activity
+  //sync dispatch: delete user
   deleteUserById(id) {
     return {
       type: TYPES.USER_REMOVE,
       id
+    };
+  },
+  //sync dispatch: add user
+  addUser(user) {
+    return {
+      type: TYPES.USER_ADD,
+      user
     };
   },
 };

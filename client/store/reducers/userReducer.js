@@ -21,6 +21,11 @@ export default function userReducer(state = initial, action) {
         });
       }
       break;
+    case TYPES.USER_ADD:
+      if (Array.isArray(userList)) {
+        state.userList.push(action.user);
+      }
+      break;
     default:
   };
 

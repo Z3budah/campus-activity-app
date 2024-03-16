@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import SideNav from '../../components/SideNav';
 /* request */
-import { getUsers, deleteUser, updateUser } from '../../api/users';
+import { deleteUser, updateUser } from '../../api/users';
 /* antd */
 import { Button, Table, Popconfirm, message, Modal, Form, Input } from 'antd';
 
@@ -139,13 +138,13 @@ const Users = function users(props) {
   const router = useRouter();
 
   return (
-    <SideNav isAdmin={currentUser.role == 'admin'}>
+    <>
       <div className='acti-box'>
         {/*header*/}
         <div className='header'>
           <h2 className='title'>用户列表</h2>
           <Button type="primary" onClick={() => {
-            router.push('/activities/addUser');
+            router.push('/users/addUser');
           }}>创建用户</Button>
         </div>
 
@@ -183,7 +182,7 @@ const Users = function users(props) {
           </Form>
         </Modal>
       </div>
-    </SideNav>
+    </>
   )
 }
 
