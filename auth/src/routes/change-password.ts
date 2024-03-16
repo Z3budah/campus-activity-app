@@ -31,7 +31,7 @@ router.post(
     if (!id) {
       id = req.currentUser!.id;
     }
-    console.log(id);
+
     const existingUser = await User.findById(id);
 
     if (!existingUser) {
