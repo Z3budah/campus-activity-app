@@ -16,7 +16,7 @@ router.post('/api/activities', requireAuth, [
 ],
   validateRequests,
   async (req: Request, res: Response) => {
-    const { title, description, time, location, actype, score, capacity, state } = req.body;
+    const { title, description, time, location, actype, score, capacity, state, pictures } = req.body;
     const activity = Activity.build({
       title,
       description,
@@ -25,6 +25,7 @@ router.post('/api/activities', requireAuth, [
       actype,
       score,
       capacity,
+      pictures,
       pubId: req.currentUser!.id,
       state
     });

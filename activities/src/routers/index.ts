@@ -21,10 +21,10 @@ router.get('/api/activities', async (req: Request, res: Response) => {
   if (req.currentUser && req.currentUser.role === 'publisher') {
     queryObject.pubId = req.currentUser!.id;
   }
-
   if (pub) {
     queryObject.pubId = pub.toString();
   }
+
   const activities = await Activity.find(queryObject);
 
   res.send(activities);
