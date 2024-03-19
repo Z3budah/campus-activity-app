@@ -4,34 +4,47 @@ import useRequest from '../../hooks/use-request';
 import { Button, Radio, Form, Input } from 'antd';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 
-export default function LoginFrom(props) {
+
+/* redux */
+import { connect } from 'react-redux';
+import action from '../../store/actions';
+
+const LoginForm = function LoginFrom(props) {
+
+  console.log(props);
+  let { addUser } = props;
 
   const apiUrl = `/api/users/${props.type}`;
-  console.log(apiUrl);
+
 
   const { doRequest, errors } = useRequest({
     url: apiUrl,
     method: 'post',
     onSuccess: (data) => {
-      console.log(data);
-      if (data.role == "publisher") Router.push('/activities');
+      if (props.type === 'create') {
+        console.log("data:", data);
+        addUser(data);
+        Router.push('/users')
+      }
       else Router.push('/');
     }
   })
 
   const onSubmit = async (values) => {
-    console.log(values);
     await doRequest(values);
     console.log(
       errors
     )
   }
 
-  const btnText = props.type === 'signin' ? '登录' : '注册';
+  const btnTxt = {
+    'signin': '登录',
+    'signup': '注册',
+    'create': '创建'
+  }
 
-  const regSty = props.type === 'signup' ? "" : "d-none";
-  const reg = props.type === 'signin';
-  console.log(reg);
+
+  const reg = props.type !== 'signin';
 
   return (
     <>
@@ -47,7 +60,7 @@ export default function LoginFrom(props) {
         >
           <Input.Password prefix={<LockOutlined className="site-form-item-icon" />} placeholder='请输入密码...' />
         </Form.Item>
-        {props.type === 'signup' && (<Form.Item
+        {reg && (<Form.Item
           name="confirm"
           dependencies={['password']}
           hasFeedback
@@ -69,7 +82,7 @@ export default function LoginFrom(props) {
           <Input.Password prefix={<LockOutlined className="site-form-item-icon" />} placeholder='请确认密码...' />
         </Form.Item>
         )}
-        {props.type === 'signup' && (
+        {reg && (
           <Form.Item name="role" label="用户类型" rules={[{ required: true, message: '"请选择用户类型...!' }]}>
             <Radio.Group>
               <Radio value="publisher">发布者</Radio>
@@ -79,7 +92,7 @@ export default function LoginFrom(props) {
         )}
         <Form.Item >
           <Button className="rounded-pill" block type="primary" htmlType="submit">
-            {btnText}
+            {btnTxt[props.type]}
           </Button>
           <br />
         </Form.Item>
@@ -94,4 +107,10 @@ export default function LoginFrom(props) {
       }
     </>
   )
-}
+};
+
+
+export default connect(
+  state => state.user,
+  action.user
+)(LoginForm);

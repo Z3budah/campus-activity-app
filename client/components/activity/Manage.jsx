@@ -1,31 +1,21 @@
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
 /* antd */
 import './manage.less'
 import { Button, Tag, Table, Popconfirm, message } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 /* request */
 import { deleteActivity, updateState, getActivity, updateActivity } from '../../api/activities';
 /* redux */
 import { connect } from 'react-redux';
 import action from '../../store/actions';
 
+/* router */
 import { useRouter } from 'next/router';
 import Link from 'next/link'
 
 /* Date Process */
 import { formateTime } from '../../public/timeutils';
-
-// const zero = (text) => {
-//   return text.length < 2 ? '0' + text : text;
-// };
-
-// const formateTime = function formateTime(time) {
-//   let arr = time.match(/\d+/g),
-//     [, month, day, hours = '00', minutes = '00'] = arr;
-
-//   return `${zero(month)}-${zero(day)} ${zero(hours)}:${zero(minutes)}`;
-// };
 
 
 const Manage = function manage(props) {
@@ -104,12 +94,13 @@ const Manage = function manage(props) {
 
   ];
 
+
   /*related State*/
   let [selectedIndex, setSelectedIndex] = useState(0),
     [tableData, setTableData] = useState([]),
     [tableLoading, setTableLoading] = useState(false);
 
-
+  const router = useRouter();
 
   /*process table data*/
   /*first time render: dispatch activities list to redux*/
@@ -155,7 +146,7 @@ const Manage = function manage(props) {
         const resp = await getActivity(id);
         if (resp.data) {
           let activity = { ...resp.data };
-          activity.time.end = moment(new Date()).format('YYYY-MM-DDTHH:mm:ss');
+          activity.time.end = dayjs(new Date()).format('YYYY-MM-DDTHH:mm:ss');
           activity.state = 3;
           const response = await updateActivity(activity, id);
           message.success(response.data.title + "活动已完成");
@@ -167,13 +158,11 @@ const Manage = function manage(props) {
       }
     } catch (_) { }
   }
+
   const updateHandler = async (id) => {
     try {
       try {
-        //state:3, finished
-        const response = await updateState(2, id);
-        message.success(response.data.title + "活动已过审");
-        updateActiById(id);
+        router.push(`/activities/edit/${id}`)
       } catch (error) {
         message.error('当前操作失败，请稍后重试', error);
       }
@@ -181,7 +170,7 @@ const Manage = function manage(props) {
     } catch (_) { }
   }
 
-  const router = useRouter();
+
   /*view binding*/
   return (
     <div className='acti-box'>

@@ -28,5 +28,9 @@ const updateActivity = (activity, id) => {
   return axios.put(`/api/activities/${id}`, activity);
 }
 
-export { getActivities, newActivity, deleteActivity, updateState, updateActivity, getActivity };
+const deletePicture = (name) => {
+  return axios.delete(`/api/activities/upload/${name}`);
+}
+
+export { getActivities, newActivity, deleteActivity, updateState, updateActivity, getActivity, deletePicture };
 

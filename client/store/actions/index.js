@@ -1,7 +1,9 @@
 import actiAction from './actiAction';
+import userAction from './userAction';
 
 const action = {
-  acti: actiAction
+  acti: actiAction,
+  user: userAction
 };
 
 export default action;

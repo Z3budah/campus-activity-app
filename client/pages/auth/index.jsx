@@ -11,7 +11,7 @@ const LandingPage = ({ currentUser }) => {
 
   useEffect(() => {
     if (currentUser) {
-      router.push('/activities');
+      router.push('/');
     }
   }, [currentUser]);
 
@@ -33,10 +33,8 @@ const LandingPage = ({ currentUser }) => {
 };
 
 LandingPage.getInitialProps = async (context) => {
-  // console.log('LANDING PAGE');
   const client = buildClient(context);
   const resp = await client.get('/api/users/currentuser').catch((err) => {
-    // console.log(err.message);
     return null
   });
   const data = resp ? resp.data : {};

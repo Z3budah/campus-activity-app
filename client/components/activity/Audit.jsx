@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react'
 /* antd */
 import './manage.less'
 import { Button, Tag, Table, Popconfirm, message } from 'antd';
-import moment from 'moment';
 /* request */
 import { updateState, getActivity } from '../../api/activities';
 /* redux */

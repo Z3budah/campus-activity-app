@@ -64,10 +64,16 @@ export default function SideNav({ children, isAdmin }) {
   const handleMenuItemClick = (key) => {
     switch (key) {
       case 'a1':
-        router.push('/activities');
+        router.push('/');
         break;
       case 'a2':
         router.push('/activities/create');
+        break;
+      case 'b1':
+        router.push('/users');
+        break;
+      case 'b2':
+        router.push('/users/addUser');
         break;
       default:
         break;

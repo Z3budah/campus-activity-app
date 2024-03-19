@@ -1,12 +1,8 @@
-import React from 'react'
-import SideNav from '../../components/SideNav'
-import Create from '../../components/activity/Create'
+import React from 'react';
+import Create from '../../components/activity/Create';
 
-
-export default function create(props) {
+export default function create_test(props) {
   return (
-    <SideNav>
-      <Create {...props} />
-    </SideNav>
+    <Create />
   )
 }

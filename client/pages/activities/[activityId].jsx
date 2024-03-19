@@ -5,7 +5,6 @@ import { getActivity } from '../../api/activities';
 import useRequest from '../../hooks/use-request';
 
 import { Button } from 'antd';
-import SideNav from '../../components/SideNav'
 import Detail from '../../components/activity/Detail';
 
 const ActivityShow = ({ activity }) => {
@@ -27,7 +26,7 @@ const ActivityShow = ({ activity }) => {
   }
 
   return (
-    <SideNav>
+    <>
       {/*header*/}
       <div className='header'>
         <h2 className='title'>活动详情页</h2>
@@ -56,8 +55,8 @@ const ActivityShow = ({ activity }) => {
             </ul>
           </div>)
         }
-      </div>
-    </SideNav>
+      </div>s
+    </>
   );
 }
 

@@ -31,13 +31,13 @@ spec:
                 name: regs-srv
                 port:
                   number: 3000   
-          # - path: /api/execute/?(.*)
-          #   pathType: Prefix
-          #   backend:
-          #     service:
-          #       name: execute-srv
-          #       port:
-          #         number: 3000    
+          - path: /student/?(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: student-srv
+                port:
+                  number: 3000    
           - path: /?(.*)
             pathType: Prefix
             backend:

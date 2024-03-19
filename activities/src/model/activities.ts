@@ -10,6 +10,7 @@ interface ActivityAttrs {
   score: number | string;
   capacity: number | string;
   pubId: string;
+  pictures: string[];
   state: number;
 }
 
@@ -24,6 +25,7 @@ interface ActivityDoc extends mongoose.Document {
   pubId: string;
   state: number;
   version: number;
+  pictures: string[];
   regsId?: string[];
 }
 
@@ -66,6 +68,9 @@ const activitySchema = new mongoose.Schema(
     state: {
       type: Number,
       required: true,
+    },
+    pictures: {
+      type: [String],
     },
     regsId: {
       type: [String],

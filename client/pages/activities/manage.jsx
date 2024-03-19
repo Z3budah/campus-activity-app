@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 /* antd */
 import './manage.less'
 import { Button, Tag, Table, Popconfirm, Modal, Form, Input, DatePicker, Select, message } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 /* request */
 import { deleteActivity, newActivity, updateState, getActivity, updateActivity } from '../../api/activities';
 /* redux */
@@ -199,7 +199,7 @@ const Manage = function manage(props) {
         const resp = await getActivity(id);
         if (resp.data) {
           let activity = { ...resp.data };
-          activity.time.end = moment(new Date()).format('YYYY-MM-DDTHH:mm:ss');
+          activity.time.end = dayjs(new Date()).format('YYYY-MM-DDTHH:mm:ss');
           activity.state = 3;
           const response = await updateActivity(activity, id);
           message.success(response.data.title + "活动已完成");
@@ -263,7 +263,7 @@ const Manage = function manage(props) {
           layout='horizontal' initialValues={{
             title: "2018级迎新晚会 金秋展艺 码上生花",
             description: "三院联合主办「金秋展艺 码上生花」迎新晚会,在这场热火朝天的晚会里,三个学院的同学为新生们带来了赏心悦目的艺术表演。",
-            time: moment(new Date()),
+            time: dayjs(new Date()),
             location: '学术大讲堂',
             actype: 'moral',
             score: 0.5,
