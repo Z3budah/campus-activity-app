@@ -162,10 +162,6 @@ const Manage = function manage(props) {
   const updateHandler = async (id) => {
     try {
       try {
-        //state:3, finished
-        // const response = await updateState(2, id);
-        // message.success(response.data.title + "活动已过审");
-        // updateActiById(id);
         router.push(`/activities/edit/${id}`)
       } catch (error) {
         message.error('当前操作失败，请稍后重试', error);
