@@ -8,6 +8,7 @@ const instances = [
     location: { text: '生活区田径场' },
     actype: 'culsport',
     score: "Ranking Based",
+    pictures: [],
     capacity: "No Limited",
     state: 2
   },
@@ -18,6 +19,7 @@ const instances = [
     location: { text: '学术大讲堂' },
     actype: 'moral',
     score: 0.5,
+    pictures: [],
     capacity: 200,
     state: 1
   },
@@ -28,6 +30,7 @@ const instances = [
     location: { text: '教学区B7-138室' },
     actype: 'intellectual',
     score: "Ranking Based",
+    pictures: [],
     capacity: 50,
     state: 0
   },
@@ -38,6 +41,7 @@ const instances = [
     location: { text: '生活区田径场' },
     actype: 'culsport',
     score: "Ranking Based",
+    pictures: [],
     capacity: "No Limited",
     state: 2
   },
@@ -48,6 +52,7 @@ const instances = [
     location: { text: '实验楼A-205室' },
     actype: 'intellectual',
     score: 0.2,
+    pictures: [],
     capacity: 100,
     state: 1
   },
@@ -58,6 +63,7 @@ const instances = [
     location: { text: '校园各处' },
     actype: 'moral',
     score: 0.5,
+    pictures: [],
     capacity: "No Limited",
     state: 0
   },

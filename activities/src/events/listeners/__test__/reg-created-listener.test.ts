@@ -18,6 +18,7 @@ const setup = async () => {
     score: 0.5,
     capacity: "No Limited",
     state: 0,
+    pictures: [],
     pubId: new mongoose.Types.ObjectId().toHexString(),
   });
   await activity.save();

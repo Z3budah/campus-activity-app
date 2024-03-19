@@ -18,6 +18,7 @@ const setup = async () => {
     location: { text: '校园各处' },
     actype: 'moral',
     score: 0.5,
+    pictures: [],
     capacity: "No Limited",
     state: 0,
     pubId: new mongoose.Types.ObjectId().toHexString(),

@@ -8,6 +8,7 @@ const instance = {
   location: { text: '校园各处' },
   actype: 'moral',
   score: 0.5,
+  pictures: [],
   capacity: "No Limited",
   state: 0,
   pubId: '123'
