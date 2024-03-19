@@ -1,8 +1,8 @@
-import React from 'react'
-import { Button, Form, Input, DatePicker, Select, Flex, message } from 'antd';
-import moment from 'moment';
+import React, { useState } from 'react';
+import { Button, Form, Input, DatePicker, Select, Upload, message } from 'antd';
+import dayjs from 'dayjs';
 /* request */
-import { newActivity } from '../../api/activities';
+import { newActivity, deletePicture } from '../../api/activities';
 /* redux */
 import { connect } from 'react-redux';
 import action from '../../store/actions';
@@ -12,11 +12,96 @@ import { useRouter } from 'next/router';
 import '../../components/activity/manage.less'
 
 const Create = function create(props) {
-  let { queryAllList } = props;
+  let { queryAllList, mode } = props;
 
   let [formIns] = Form.useForm();
 
   const router = useRouter();
+
+  const [fileList, setFileList] = useState([]);
+
+  const beforeUpload = (file) => {
+
+    const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+    if (!isJpgOrPng) {
+      message.error('只能上传 JPG/PNG 格式的图片！');
+      return Upload.LIST_IGNORE;
+    }
+    const isLt5M = file.size / 1024 / 1024 < 2;
+    if (!isLt5M) {
+      message.error('图片大小不能超过 2MB！');
+      return Upload.LIST_IGNORE;
+    }
+    const isDuplicate = fileList.some(item => item.name === file.name);
+    if (isDuplicate) {
+      console.log('文件已存在');
+      return Upload.LIST_IGNORE;
+    }
+    return true;
+  }
+
+  /*============================================picture upload ============================================ */
+  const optimizeFileList = (data, fileList) => {
+    const { name, url: serverUrl } = data;
+    const file = fileList.pop();
+    const { uid, url, originFileObj } = file;
+    const newFile = { uid, name, url, serverUrl, originFileObj };
+    fileList.push(newFile);
+  }
+  const onChange = ({ file, fileList }) => {
+    console.log(file);
+    const { status, response } = file;
+    if (status === 'done') {
+      const { ok, message: msg, data } = response;
+      if (ok) {
+        optimizeFileList(data, fileList);
+        message.success(msg)
+      } else {
+        message.error(msg)
+      }
+    }
+    // fileList must be set everytime onChange emitted,
+    // or status of file will be stuck in 'uploading'
+    setFileList(fileList);
+  };
+
+  const onRemove = async (file) => {
+    const { name, serverUrl } = file;
+    if (serverUrl) {
+      try {
+        const response = await deletePicture(name);
+        console.log(response);
+        const { ok, message: msg } = response.data;
+        if (ok) {
+          message.success(msg);
+          return true;
+        } else {
+          message.error(msg);
+          return false
+        }
+      }
+      catch (err) {
+        message.error(msg);
+        return false
+      }
+    }
+  }
+
+  const onPreview = async (file) => {
+    let src = file.url;
+    if (!src) {
+      src = await new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file.originFileObj);
+        reader.onload = () => resolve(reader.result);
+      });
+    }
+    const image = new Image();
+    image.src = src;
+    const imgWindow = window.open(src);
+    imgWindow?.document.write(image.outerHTML);
+  };
+  /* ==================================================end================================================== */
 
   /* submit new activity*/
   const submit = async () => {
@@ -27,8 +112,10 @@ const Create = function create(props) {
         start: data.time.format('YYYY-MM-DDTHH:mm:ss'),
         end: null,
       }
+      data.pictures = data.pictures.fileList.map(file => file.serverUrl);
       data.location = { text: data.location }
       try {
+        console.log(data);
         const response = await newActivity({ ...data, state: 0 });
         message.success(response.data.title + "活动已创建成功");
         queryAllList();
@@ -47,9 +134,9 @@ const Create = function create(props) {
   /* fill test data */
   const fill = () => {
     formIns.setFieldsValue({
-      title: "2018级迎新晚会 金秋展艺 码上生花",
+      title: "预填充数据",
       description: "三院联合主办「金秋展艺 码上生花」迎新晚会,在这场热火朝天的晚会里,三个学院的同学为新生们带来了赏心悦目的艺术表演。",
-      time: moment(new Date()),
+      time: dayjs(new Date()),
       location: '学术大讲堂',
       actype: 'moral',
       score: 0.5,
@@ -97,6 +184,22 @@ const Create = function create(props) {
         </Form.Item>
         <Form.Item label="活动人数" name="capacity">
           <Input></Input>
+        </Form.Item>
+        <Form.Item label="活动图片" name="pictures">
+          <Upload
+            action="/api/activities/upload"
+            listType="picture-card"
+            fileList={fileList}
+            onChange={onChange}
+            onRemove={onRemove}
+            beforeUpload={beforeUpload}
+            onPreview={onPreview}
+            accept="image/jpeg,image/png"
+            maxCount={3}
+            maxFileSize={2 * 1024 * 1024}
+          >
+            {fileList.length <= 3 && '+ Upload'}
+          </Upload>
         </Form.Item>
         <Form.Item label="活动描述" name="description"
           rules={[
